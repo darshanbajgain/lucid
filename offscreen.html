@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head><title>Lucid Offscreen</title></head>
+<body>
+<!--
+  Hidden offscreen document (chrome.offscreen API, MV3).
+  Runs TF.js + NSFWJS in a DOM renderer context where:
+    - WebGL is available (GPU inference)
+    - unsafe-eval is allowed (extension_pages CSP override in manifest)
+  The Background Service Worker creates this document on demand and proxies
+  ANALYZE_NSFW messages here. No UI is shown to the user.
+-->
+<script type="module" src="/src/background/offscreen.ts"></script>
+</body>
+</html>

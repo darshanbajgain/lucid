@@ -1,0 +1,55 @@
+{
+    "manifest_version": 3,
+    "name": "Lucid",
+    "version": "1.2.0",
+    "description": "On-device AI that blurs explicit, graphic, and distracting content on Instagram and TikTok.",
+    "icons": {
+        "16": "icon16.png",
+        "48": "icon48.png",
+        "128": "icon128.png"
+    },
+    "permissions": [
+        "activeTab",
+        "storage",
+        "scripting",
+        "offscreen"
+    ],
+    "host_permissions": [
+        "*://*.instagram.com/*",
+        "*://*.fbcdn.net/*",
+        "*://*.cdninstagram.com/*",
+        "*://*.tiktok.com/*",
+        "*://*.tiktokcdn.com/*",
+        "*://*.tiktokcdn-us.com/*",
+        "https://huggingface.co/*",
+        "https://*.hf.co/*"
+    ],
+    "content_security_policy": {
+        "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+    },
+    "background": {
+        "service_worker": "src/background/index.ts",
+        "type": "module"
+    },
+    "action": {
+        "default_popup": "src/popup/index.html",
+        "default_title": "Lucid",
+        "default_icon": {
+            "16": "icon16.png",
+            "48": "icon48.png",
+            "128": "icon128.png"
+        }
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "*://*.instagram.com/*",
+                "*://*.tiktok.com/*"
+            ],
+            "js": [
+                "src/content/index.ts"
+            ],
+            "run_at": "document_end"
+        }
+    ]
+}

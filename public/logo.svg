@@ -1,0 +1,12 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="lucidGrad" x1="8" y1="8" x2="120" y2="120" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#5A5CF0"/>
+      <stop offset="1" stop-color="#2F2EBE"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="30" fill="url(#lucidGrad)"/>
+  <circle cx="59" cy="67" r="30" stroke="#ffffff" stroke-width="7" stroke-opacity="0.5"/>
+  <circle cx="59" cy="67" r="14" fill="#ffffff"/>
+  <path d="M97 24l3.8 9.9 9.9 3.8-9.9 3.8L97 51.4l-3.8-9.9-9.9-3.8 9.9-3.8L97 24z" fill="#ffffff"/>
+</svg>

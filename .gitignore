@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Captured DOM snapshots (local test artifacts, not source code).
+# elements/instagram/ is grandfathered in (committed earlier as ground
+# truth for IG selectors); new platforms keep their DOM samples local.
+elements/tiktok/
+
+# CSP spike (separate throwaway repo, not part of main project)
+../lucid-csp-spike/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Local env
+.env
+.env.local
+
+# TypeScript incremental build cache
+*.tsbuildinfo
+
+# onnxruntime-web WASM — auto-copied from node_modules by `npm run wasm:copy`
+# (the .onnx model in public/ IS checked in; only the runtime WASM is generated)
+public/ort-wasm-*.wasm

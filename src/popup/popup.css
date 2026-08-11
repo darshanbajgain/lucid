@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+/* Self-hosted fonts (CSP blocks the Google Fonts CDN — these ship in the
+   extension under /fonts and load same-origin). */
+@font-face {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("/fonts/inter-400.woff2") format("woff2");
+}
+@font-face {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url("/fonts/inter-600.woff2") format("woff2");
+}
+@font-face {
+    font-family: "Hanken Grotesk";
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url("/fonts/hankengrotesk-600.woff2") format("woff2");
+}
+@font-face {
+    font-family: "Hanken Grotesk";
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url("/fonts/hankengrotesk-700.woff2") format("woff2");
+}
+@font-face {
+    font-family: "JetBrains Mono";
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url("/fonts/jetbrainsmono-500.woff2") format("woff2");
+}
+
+/* "Lucid Light" design system — violet Material-3 palette + tri-font type.
+   Tailwind v4 generates utilities from these tokens (bg-primary,
+   text-on-surface, font-display, font-mono, …). */
+@theme {
+    --color-primary:            #6b38d4;
+    --color-on-primary:         #ffffff;
+    --color-primary-container:  #8455ef;
+    --color-primary-fixed:      #e9ddff;
+    --color-on-primary-fixed:   #23005c;
+    --color-on-primary-fixed-variant: #5516be;
+
+    --color-surface:            #fbf8ff;
+    --color-surface-lowest:     #ffffff;
+    --color-surface-low:        #f4f2fd;
+    --color-surface-container:  #eeedf7;
+    --color-surface-variant:    #e3e1ec;
+    --color-on-surface:         #1a1b22;
+    --color-on-surface-variant: #494454;
+    --color-outline:            #7b7486;
+    --color-outline-variant:    #cbc3d7;
+
+    --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-display: "Hanken Grotesk", "Inter", system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+/* Popup chrome — force a fixed width that browsers respect for MV3 popups. */
+html, body {
+    color-scheme: light;
+    background: #fbf8ff;
+    font-family: var(--font-sans);
+    scroll-behavior: smooth;
+}
+
+body {
+    width: 340px;
+    min-height: 380px;
+    margin: 0;
+}
+
+/* Hide scrollbar everywhere — content stays scrollable via wheel / drag /
+   keyboard / programmatic .scrollIntoView(). Keeps the popup uninterrupted. */
+::-webkit-scrollbar {
+    display: none;
+}
+
+* {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Legacy IE/Edge */
+}
