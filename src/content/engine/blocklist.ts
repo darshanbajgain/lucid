@@ -32,7 +32,7 @@ function isExtensionContextValid(): boolean {
 // Categories + defaults
 // ---------------------------------------------------------------------------
 
-export type BlocklistCategory = 'nsfw' | 'viral' | 'engagementBait' | 'distracting';
+export type BlocklistCategory = 'nsfw' | 'graphic' | 'viral' | 'engagementBait' | 'distracting';
 
 interface CategoryEntry {
     readonly key: BlocklistCategory;
@@ -49,6 +49,14 @@ export const DEFAULT_CATEGORIES: readonly CategoryEntry[] = [
         terms: [
             '#nsfw', '#nude', '#nudity', '#sexy', '#lingerie',
             '#thirsttrap', '#thirst', '#onlyfans', '#explicit',
+        ],
+    },
+    {
+        key: 'graphic',
+        label: 'Gore / graphic violence',
+        description: 'Gore, accident, fight, and graphic-violence hashtags.',
+        terms: [
+            '#gore', '#gorevideos','#brutal',
         ],
     },
     {
@@ -109,6 +117,7 @@ const SETTINGS_VERSION = 3;
 const DEFAULT_SETTINGS: BlocklistSettings = {
     categories: {
         nsfw: false,
+        graphic: false,
         viral: false,
         engagementBait: false,
         distracting: false,
@@ -135,7 +144,7 @@ export async function loadBlocklistSettings(): Promise<BlocklistSettings> {
         // version prevents re-triggering, so later user toggles are respected.
         // Custom terms are always preserved.
         if ((stored.v ?? 1) < SETTINGS_VERSION) {
-            categories = { nsfw: false, viral: false, engagementBait: false, distracting: false };
+            categories = { nsfw: false, graphic: false, viral: false, engagementBait: false, distracting: false };
             const migrated: BlocklistSettings = { categories, custom, v: SETTINGS_VERSION };
             void saveBlocklistSettings(migrated);
             return migrated;
