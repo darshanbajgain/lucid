@@ -18,7 +18,7 @@ blocklist runs alongside it. Nothing about your feed ever leaves your browser.
   neutral / suggestive) scans each post **thumbnail** and blurs sensitive
   imagery, with per-class confidence thresholds.
 - **User blocklist** — add your own hashtags/phrases, or switch on curated
-  category lists (NSFW / viral / engagement bait / distracting). All off by
+  category lists (NSFW / gore / viral / engagement bait / distracting). All off by
   default — you opt in.
 - **Three modes** — **Off** (inert), **Basic** (blocklist only, no AI), **Smart**
   (image model + blocklist).
