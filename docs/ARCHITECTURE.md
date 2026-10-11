@@ -3,7 +3,7 @@
 > Single source of truth for Lucid's runtime shape. If you're planning an architecture-level change, start here. For user-facing behaviour read the [README](../README.md); for the deeper research framing read [`PROBLEM_STATEMENT.md`](../research/PROBLEM_STATEMENT.md).
 >
 > **Version covered:** v1.2 (Off / Basic / Smart modes; 4-class model — explicit / gore / neutral / suggestive, v1.2.0; blocklist + image, no heuristic text path).
-> **Last reviewed:** 2026-06-21.
+> **Last reviewed:** 2026-10-11.
 
 ---
 
@@ -41,7 +41,7 @@ Chrome MV3 splits the extension across three execution contexts. Lucid uses all 
 │  src/background/offscreen.ts                                │
 │  ─────────────────────────                                  │
 │  • DOM + WebGL context, no CSP restrictions                 │
-│  • Loads ONNX model from Cache API (or fetches from CDN)    │
+│  • Loads ONNX model from Cache API (or fetches from HF)     │
 │  • Runs onnxruntime-web inference per request               │
 │  • Returns 4-class probs (explicit/gore/neutral/suggestive) │
 └─────────────────────────────────────────────────────────────┘
@@ -151,9 +151,9 @@ When extending to a third platform, add a clause here.
 | **Session state** | `chrome.storage.session` | `lucid_session` — current-session stats | Until browser restart |
 | **L1 verdict cache** | In-memory `Map` in content script | Hot path for same-post re-scans | Until tab navigation |
 | **L2 verdict cache** | `chrome.storage.local` (`rc_*` keys) | Cross-tab + cross-session persistence | 7 days, evicted on read |
-| **Model cache** | Cache API (`lucid-models-v3`) | ONNX bytes after first CDN fetch | Until cache name bump or user clear |
+| **Model cache** | Cache API (`lucid-models-v4`) | ONNX bytes after first fetch from Hugging Face | Until cache name bump or user clear |
 
-**Cache versioning.** `CACHE_VERSION` in [`result-cache.ts`](../src/content/cache/result-cache.ts) is bumped when verdict shape or the model changes; older entries fail validation and get evicted. Currently `v7` (v1.1 retrained model — old image verdicts are stale).
+**Cache versioning.** `CACHE_VERSION` in [`result-cache.ts`](../src/content/cache/result-cache.ts) is bumped when verdict shape or the model changes; older entries fail validation and get evicted. Currently `v8` (v1.2.0 4-class model).
 
 **Model cache versioning.** `MODEL_CACHE_NAME` in [`model-loader.ts`](../src/background/model-loader.ts) is bumped when shipping a new model. Browser garbage-collects old caches by name.
 
@@ -167,7 +167,7 @@ When extending to a third platform, add a clause here.
 src/
 ├─ background/
 │  ├─ index.ts             Service worker — message router, offscreen mutex
-│  ├─ model-loader.ts      Cache API + CDN fetch (no bundled fallback)
+│  ├─ model-loader.ts      Cache API + Hugging Face fetch (no bundled fallback)
 │  ├─ offscreen.ts         ONNX inference (loads model once, reuses session)
 │  └─ scrape-store.ts      Optional: training-data collection mode
 │
