@@ -1,6 +1,6 @@
 # Architecture
 
-> Single source of truth for Lucid's runtime shape. If you're planning an architecture-level change, start here. For user-facing behaviour read the [README](../README.md); for the deeper research framing read [`PROBLEM_STATEMENT.md`](../research/PROBLEM_STATEMENT.md).
+> Single source of truth for Lucid's runtime shape. If you're planning an architecture-level change, start here. For user-facing behaviour read the [README](../README.md); for the model and how it was trained see the [model card](https://huggingface.co/darshan12222/lucid-nsfw-4class) and [`TRAINING.md`](https://huggingface.co/darshan12222/lucid-nsfw-4class/blob/main/TRAINING.md).
 >
 > **Version covered:** v1.2 (Off / Basic / Smart modes; 4-class model — explicit / gore / neutral / suggestive, v1.2.0; blocklist + image, no heuristic text path).
 > **Last reviewed:** 2026-10-11.
@@ -231,7 +231,7 @@ These are the design constraints that took iterations to discover. Pre-flight th
 
 6. **Captions are dirty.** Each platform strategy enriches the raw text with hashtag anchors + @-mentions found elsewhere in the DOM. The blocklist + verdict log run on the enriched text. Don't bypass `getCaption()`.
 
-7. **Model bytes path: Cache API → CDN (no bundled fallback).** [`model-loader.ts`](../src/background/model-loader.ts). The model lives on a public Hugging Face repo; first successful load caches it forever. If you change the URL, bump `MODEL_CACHE_NAME` too. (The bundled `public/*.onnx` fallback was removed once the CDN path was proven — see TODO.)
+7. **Model bytes path: Cache API → CDN (no bundled fallback).** [`model-loader.ts`](../src/background/model-loader.ts). The model lives on a public Hugging Face repo; first successful load caches it forever. If you change the URL, bump `MODEL_CACHE_NAME` too. (The bundled `public/*.onnx` fallback was removed once the remote path was proven.)
 
 8. **CSS overlay z-index 9999, scoped by `data-lucid-overlay`.** TikTok modal handling uses `body[data-lucid-tt-modal="true"]` to suppress grid overlays bleeding through the backdrop while keeping modal-internal overlays visible. See `injectLucidStyles` and `watchTikTokModalUrl` in [`content/index.ts`](../src/content/index.ts).
 
@@ -254,7 +254,7 @@ These are the design constraints that took iterations to discover. Pre-flight th
 
 ## 8. What's deliberately out of scope
 
-- **Service-side rules.** No backend, no API key, no rate limit. Anything cross-user lives in the labelling pipeline (see `FINE_TUNING_PLAN.md`), not the runtime.
+- **Service-side rules.** No backend, no API key, no rate limit. Anything cross-user lives in the offline training pipeline (see [`TRAINING.md`](https://huggingface.co/darshan12222/lucid-nsfw-4class/blob/main/TRAINING.md)), not the runtime.
 - **Per-account customisation that requires login.** The extension is anonymous; no account, no sync. Per-machine settings only.
 - **Live model updates without a release.** Model URL is hardcoded; updates require a new release tag + extension rebuild. Justified for reproducibility and avoiding silent model swaps.
 
@@ -262,7 +262,6 @@ These are the design constraints that took iterations to discover. Pre-flight th
 
 ## See also
 
-- [`PROBLEM_STATEMENT.md`](../research/PROBLEM_STATEMENT.md) — research framing + threshold-gating analysis
-- [`FINE_TUNING_PLAN.md`](../research/FINE_TUNING_PLAN.md) — training data + the Colab pipeline
-- [`archive/`](archive/) — historical sprint plans + pre-v2.2.3 architecture docs
+- [Model card](https://huggingface.co/darshan12222/lucid-nsfw-4class) — classes, metrics, intended use, limitations
+- [`TRAINING.md`](https://huggingface.co/darshan12222/lucid-nsfw-4class/blob/main/TRAINING.md) — training data summary + the Colab fine-tune pipeline
 - [README](../README.md) — user-facing overview

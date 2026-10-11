@@ -94,7 +94,7 @@ first `[Lucid]` inference line shows sane per-class scores.
 
 ## Shipping a model update
 
-1. Train + export (see [`../training/README.md`](../training/README.md)).
+1. Train + export (see [`TRAINING.md`](https://huggingface.co/darshan12222/lucid-nsfw-4class/blob/main/TRAINING.md) on the model repo).
 2. Publish the `.onnx` to the public model host (+ model card).
 3. Point `MODEL_URL` at the new asset, bump `MODEL_CACHE_NAME` (`v3` → `v4`).
 4. Bump `CACHE_VERSION` so cached 3-/4-class verdicts are recomputed.
