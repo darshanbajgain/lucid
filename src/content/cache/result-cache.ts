@@ -64,8 +64,10 @@ const MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
  *   v5 — v2.2.1 (IG caption extraction fixed)
  *   v6 — v2.2.3 (text path retired; cache shape lost textScore field)
  *   v7 — v1.1.0 model (retrained 3-class) — old image verdicts are stale
+ *   v8 — v1.2.0 model (4-class, +gore)
+ *   v9 — preprocessing fix (center crop instead of stretch) — scores changed
  */
-const CACHE_VERSION = 8;
+const CACHE_VERSION = 9;
 
 // ---------------------------------------------------------------------------
 // Hash Helper

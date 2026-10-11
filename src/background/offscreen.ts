@@ -27,6 +27,9 @@ import { loadModelBytes } from './model-loader';
 import { logger } from '../utils/logger';
 
 const MODEL_INPUT_SIZE = 384;
+// Short-side resize target before the center crop — mirrors the notebook's
+// eval transform: Resize(INPUT_SIZE + 32) → CenterCrop(INPUT_SIZE).
+const RESIZE_SHORT_SIDE = MODEL_INPUT_SIZE + 32;
 
 // Class index mapping — alphabetical, matches the training notebook's
 // ImageFolder ordering (training/notebooks/finetune.ipynb). DO NOT reorder.
@@ -84,7 +87,19 @@ function preprocess(bitmap: ImageBitmap): Float32Array {
     const canvas = new OffscreenCanvas(MODEL_INPUT_SIZE, MODEL_INPUT_SIZE);
     const ctx = canvas.getContext('2d') as OffscreenCanvasRenderingContext2D | null;
     if (!ctx) throw new Error('OffscreenCanvas 2D context unavailable');
-    ctx.drawImage(bitmap, 0, 0, MODEL_INPUT_SIZE, MODEL_INPUT_SIZE);
+
+    // Aspect-preserving resize + center crop (NOT a stretch to 384×384).
+    // Training never saw squashed images; stretching 4:5 posts and 9:16 reel
+    // covers was a source of confident false positives. Scaling the short
+    // side to 416 then cropping the central 384 square is equivalent to
+    // cropping a (short × 384/416) square from the source and scaling it.
+    const shortSide = Math.min(bitmap.width, bitmap.height);
+    const cropSide = shortSide * (MODEL_INPUT_SIZE / RESIZE_SHORT_SIDE);
+    const sx = (bitmap.width - cropSide) / 2;
+    const sy = (bitmap.height - cropSide) / 2;
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(bitmap, sx, sy, cropSide, cropSide, 0, 0, MODEL_INPUT_SIZE, MODEL_INPUT_SIZE);
 
     const { data } = ctx.getImageData(0, 0, MODEL_INPUT_SIZE, MODEL_INPUT_SIZE);
     const pixels = MODEL_INPUT_SIZE * MODEL_INPUT_SIZE;
