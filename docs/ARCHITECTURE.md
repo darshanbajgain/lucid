@@ -153,7 +153,7 @@ When extending to a third platform, add a clause here.
 | **L2 verdict cache** | `chrome.storage.local` (`rc_*` keys) | Cross-tab + cross-session persistence | 7 days, evicted on read |
 | **Model cache** | Cache API (`lucid-models-v4`) | ONNX bytes after first fetch from Hugging Face | Until cache name bump or user clear |
 
-**Cache versioning.** `CACHE_VERSION` in [`result-cache.ts`](../src/content/cache/result-cache.ts) is bumped when verdict shape or the model changes; older entries fail validation and get evicted. Currently `v8` (v1.2.0 4-class model).
+**Cache versioning.** `CACHE_VERSION` in [`result-cache.ts`](../src/content/cache/result-cache.ts) is bumped when verdict shape or the model changes; older entries fail validation and get evicted. Currently `v9` (center-crop preprocessing changed every score).
 
 **Model cache versioning.** `MODEL_CACHE_NAME` in [`model-loader.ts`](../src/background/model-loader.ts) is bumped when shipping a new model. Browser garbage-collects old caches by name.
 
